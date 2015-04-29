@@ -1,0 +1,16 @@
+win_ca:
+  certificates:
+    example_ca: |
+        -----BEGIN CERTIFICATE-----
+        VGhpcyBpcyBhbiBleGFtcGxlIGNlcnRpZmljYXRlIGluIGJhc2UgNjQsIHlvdSB3
+        YW50IHRvIHBsYWNlIHRoZSBjb250ZW50cyBvZiB5b3VyIGNlcnRpZmljYXRlIGhl
+        cmUThis is just some random text encoded in base 64, this is whe
+        re you want your certificate contents to go to be properly loade
+        d by the win-ca-installer-formula=
+        -----END CERTIFICATE-----
+
+    example2_ca: |
+        -----BEGIN CERTIFICATE-----
+        A second example certificate to demonstrate that you can install
+        multiple certificates if you so desire=
+        -----END CERTIFICATE-----
