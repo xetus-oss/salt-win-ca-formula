@@ -36,33 +36,12 @@
 # Will not load the certificate if the fingerprint matches an existing
 # certificate in the store
 # 
-win-ca-{{certname}}:
-  cmd.run:
-    - name: >
-        $pfx = new-object 
-        System.Security.Cryptography.X509Certificates.X509Certificate2;
-        $certPath = "{{data_dir}}/{{certname}}.crt";
-        $pfxPass = "";
-        $pfx.import($certPath,$pfxPass,"Exportable,PersistKeySet");
-        $store = new-object 
-        System.Security.Cryptography.X509Certificates.X509Store(
-        [System.Security.Cryptography.X509Certificates.StoreName]::Root,
-        "localmachine");
-        $store.open("MaxAllowed");
-        $store.add($pfx);
-        $store.close();
-
+salt://win-ca/powershell/ca_install.ps1:
+  cmd.script:
+    - args: ' {{data_dir}}\{{certname}}.crt'
     - shell: powershell
-    - unless: >
-        $pfx = new-object 
-        System.Security.Cryptography.X509Certificates.X509Certificate2;
-        $certPath = "{{data_dir}}/{{certname}}.crt";
-        $pfxPass = "";
-        $pfx.import($certPath,$pfxPass,"Exportable,PersistKeySet");
-        cd Cert:\LocalMachine\Root;
-        &{If(dir | ? { $_.Thumbprint -eq $pfx.Thumbprint }) 
-        {EXIT 0} 
-        Else 
-        {EXIT 1}};
+    - unless: EXIT {{ salt['cmd.script'](
+        'salt://win-ca/powershell/ca_verify.ps1', args=(' ' + 
+        data_dir + '/' + certname + '.crt'), shell="powershell").retcode }}
 
 {% endfor %}
