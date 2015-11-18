@@ -8,7 +8,7 @@
 #
 # Retrieve relevant pillar and grain data
 #
-{% set data_dir = salt['grains.get'](
+{% set data_dir = salt['pillar.get'](
     'certificate_data_dir', 
     'c:\\salt-data\\certificates\\') %}
 
